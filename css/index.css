@@ -1,0 +1,58 @@
+h1 {
+    text-align: center;
+}
+
+#container{
+    text-align: center;
+    margin-top: 150px;
+}
+
+.button {
+    width: 230px;
+    height: 100px;
+    border-radius: 60px;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 10px;
+}
+
+#btn1{
+    background: rgb(63,94,251);
+}
+
+#btn2{
+    background: #9fe994
+    
+}
+
+#btn3{
+    background: #bf94e9
+    
+}
+
+#btn4{
+    background: #94e9d6
+    
+}
+
+#btn5{
+    background: #94b9e9
+    
+}
+
+#fds{
+    border-color: black;
+    color: blanchedalmond;
+    font-size: 20px;
+}
+
+#retour{
+    float: right;
+}
+
+#logo{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 40%;
+}
