@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="../css/index.css">
+    <meta charset="UTF-8">
+    <title>Veleos     |     Application</title>
+  </head>
+  <body>
+    <a href="../html/index.html" id="retour"><img src="../img/return.png" alt="retour"></a>
+    <form >
+      <div class="containerFacture">
+        <input type="text" id="lname" class="lname" placeholder="Nom" required>
+        <input type="text" id="fname" class="fname" placeholder="Prénom" required>
+      </div>
+
+      <div class="containerFacture">
+        <input type="text" id="adress" class="adress" placeholder="Adresse" required> 
+        <input type="text" id="city" class="city" placeholder="Ville" required>
+        <input type="text" id="zip" class="zip" placeholder="Code postal" required>
+      </div>
+
+      <div class="containerFacture">
+        <input type="email" id="email" class="email" placeholder="Email">
+        <input type="tel" id="phone" class="phone" placeholder="Téléphone">
+      </div>
+
+      <div class="containerFacture">Nombre de produit</div>
+        <select onChange="nbProduct(this);">
+          <option>0</option>
+          <option>1</option>
+          <option>2</option>
+          <option>3</option>
+          <option>4</option>
+          <option>5</option>
+          <option>6</option>
+          <option>7</option>
+          <option>8</option>
+          <option>9</option>
+          <option>10</option>
+          <option>11</option>
+          <option>12</option>
+          <option>13</option>
+          <option>14</option>
+          <option>15</option>
+          <option>16</option>
+          <option>17</option>
+          <option>18</option>
+          <option>19</option>
+          <option>20</option>
+        </select>
+      <div id="product"></div>
+
+      <input id="impression" name="impression" type="submit" value="Imprimer cette page" onclick="printFacture()" />
+    </form>
+  </div>
+  </body>
+  <script type="text/javascript" src="../node_modules/jquery/dist/jquery.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script type="text/javascript" src="../js/facture.js"></script>
+</html>

@@ -54,7 +54,7 @@ h1 {
     display: block;
     margin-left: auto;
     margin-right: auto;
-    width: 40%;
+    width: 35%;
 }
 .row {
     margin-top: 30px;
@@ -81,4 +81,10 @@ th {
 #tableDataVelo{
     margin-left:auto;
     margin-right:auto;
+}
+
+.containerFacture{
+    margin-top: 40px;
+    margin-left: 0 auto;
+    margin-right: 0 auto;
 }

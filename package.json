@@ -13,6 +13,7 @@
     "electron": "^9.0.5"
   },
   "dependencies": {
+    "jquery": "^3.5.1",
     "pg": "^8.2.1"
   }
 }

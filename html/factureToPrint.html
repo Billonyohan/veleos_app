@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+  </head>
+  <style type="text/css">td{padding-left: 15px;padding-right: 15px;padding-top: 5px;padding-bottom: 5px;}table, td {border: 1px solid black;text-align: center;}body{background: #ccc;padding: 30px;}.container{width: 21cm;min-height: 29.7cm;}.invoice{background: white;width: 100%;padding: 50px;}.row{display: grid;grid-template-columns: 1fr 1fr;}#logo{float: left;margin-left: 30px;width: 2.5cm;}.document-type{float: right;margin-right: 30px;text-align: right;color: #444;}p{margin-left: 40px;}table{margin-left:auto;margin-right:auto;vertical-align:middle;border: 1px solid black; text-align: center;}footer{position: absolute;bottom: 0;width: 850px;}.bottom-page{font-size: 0.7em;border: 1px solid black;text-align: center;}.divCity{margin-right: 10px;}</style>
+  <body>
+    <div class="container" onclick="print()">
+      <div class="invoice">
+        <div class="row">
+          <img src="../img/logo.png" alt="logo" id="logo" class="logo">
+          <h1 class="document-type display-4">FACTURE</h1>
+          <div></div>
+          <div class="row" style="display:inline-block"><strong style="float: right;margin-right: 45px;display:inline-flex;">N°90T-<div id="day"></div>-<div id="month"></div>-<div id="year"></div></strong></div>
+        </div>
+        <div class="row">
+          <div class="col-7">
+            <p>
+              <br>
+              <strong>Veleos</strong><br>
+              5 avenue des ursulines<br>
+              78300 POISSY<br>
+              01.30.30.30.30<br>
+              veleos@gmail.com<br>
+              veleos.fr
+            </p>
+          </div>
+          <div class="col-5">
+            <br><br><br><br><br>
+            <div style="float: right;margin-right: 40px;">
+              <strong class="row" style="display: grid;grid-template-columns: 1fr 1fr;"><div id="last_name"></div><div id="first_name"></div></strong><br>
+              <div id="adress"></div><br>
+              <div class="row"><div class="divCity" id="city" style="text-transform: uppercase;"></div><div id="zip"></div></div>
+            </div>
+          </div>
+        </div>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Description</th>
+              <th>Quantité</th>
+              <th>PU HT</th>
+              <th>Total HT</th>
+              <th>TVA 20%</th>
+              <th>Total TTC</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Audits et rapports mensuels</td>
+              <td>1</td>
+              <td class="text-right">500,00€</td>
+              <td>500,00€</td>
+              <td>100,00€</td>
+              <td class="text-right">600,00€</td>
+            </tr>
+            <tr>
+              <td>Génération des rapports d'activité</td>
+              <td>4</td>
+              <td class="text-right">800,00€</td>
+              <td>3 200,00€</td>
+              <td>640,00€</td>
+              <td class="text-right">3 840,00€</td>
+            </tr>
+            <tr>
+              <td>Audits et rapports mensuels</td>
+              <td>1</td>
+              <td class="text-right">500,00€</td>
+              <td>500,00€</td>
+              <td>100,00€</td>
+              <td class="text-right">600,00€</td>
+            </tr>
+            <tr>
+              <td>Génération des rapports d'activité</td>
+              <td>4</td>
+              <td class="text-right">800,00€</td>
+              <td>3 200,00€</td>
+              <td>640,00€</td>
+              <td class="text-right">3 840,00€</td>
+            </tr>
+            <tr>
+              <td>Audits et rapports mensuels</td>
+              <td>1</td>
+              <td class="text-right">500,00€</td>
+              <td>500,00€</td>
+              <td>100,00€</td>
+              <td class="text-right">600,00€</td>
+            </tr>
+            <tr>
+              <td>Génération des rapports d'activité</td>
+              <td>4</td>
+              <td class="text-right">800,00€</td>
+              <td>3 200,00€</td>
+              <td>640,00€</td>
+              <td class="text-right">3 840,00€</td>
+            </tr>
+            <tr>
+              <td>Audits et rapports mensuels</td>
+              <td>1</td>
+              <td class="text-right">500,00€</td>
+              <td>500,00€</td>
+              <td>100,00€</td>
+              <td class="text-right">600,00€</td>
+            </tr>
+            <tr>
+              <td>Génération des rapports d'activité</td>
+              <td>4</td>
+              <td class="text-right">800,00€</td>
+              <td>3 200,00€</td>
+              <td>640,00€</td>
+              <td class="text-right">3 840,00€</td>
+            </tr>
+            <tr>
+              <td>Audits et rapports mensuels</td>
+              <td>1</td>
+              <td class="text-right">500,00€</td>
+              <td>500,00€</td>
+              <td>100,00€</td>
+              <td class="text-right">600,00€</td>
+            </tr>
+            <tr>
+              <td>Génération des rapports d'activité</td>
+              <td>4</td>
+              <td class="text-right">800,00€</td>
+              <td>3 200,00€</td>
+              <td>640,00€</td>
+              <td class="text-right">3 840,00€</td>
+            </tr>
+            <tr>
+              <td>Audits et rapports mensuels</td>
+              <td>1</td>
+              <td class="text-right">500,00€</td>
+              <td>500,00€</td>
+              <td>100,00€</td>
+              <td class="text-right">600,00€</td>
+            </tr>
+            <tr>
+              <td>Génération des rapports d'activité</td>
+              <td>4</td>
+              <td class="text-right">800,00€</td>
+              <td>3 200,00€</td>
+              <td>640,00€</td>
+              <td class="text-right">3 840,00€</td>
+            </tr>
+            <tr>
+              <td>Audits et rapports mensuels</td>
+              <td>1</td>
+              <td class="text-right">500,00€</td>
+              <td>500,00€</td>
+              <td>100,00€</td>
+              <td class="text-right">600,00€</td>
+            </tr>
+            <tr>
+              <td>Génération des rapports d'activité</td>
+              <td>4</td>
+              <td class="text-right">800,00€</td>
+              <td>3 200,00€</td>
+              <td>640,00€</td>
+              <td class="text-right">3 840,00€</td>
+            </tr>
+            <tr>
+              <td>Audits et rapports mensuels</td>
+              <td>1</td>
+              <td class="text-right">500,00€</td>
+              <td>500,00€</td>
+              <td>100,00€</td>
+              <td class="text-right">600,00€</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="row" style="margin-top: 25px;display: grid;grid-template-columns: 1fr 1fr;">
+          <div class="col-8">
+          </div>
+          <div class="col-4">
+            <table class="table table-sm text-right" style="margin-left:144px;border: 1px solid black; text-align: center;">
+              <tr>
+                <td><strong>Total HT</strong></td>
+                <td class="text-right">3 700,00€</td>
+              </tr>
+              <tr>
+                <td>TVA 20%</td>
+                <td class="text-right">740,00€</td>
+              </tr>
+              <tr>
+                <td><strong>Total TTC</strong></td>
+                <td class="text-right">4 440,00€</td>
+              </tr>
+            </table>
+          </div>
+        </div>
+        <br>
+        <br>
+        <br>
+        <br>
+      </div>
+        <footer>
+          <p class="bottom-page text-right">
+            SARL VELEOS  - N° SIRET 88394372200016 RCS Versailles B 883 943 722<br>
+            5 avenue des ursulines - 78300 POISSY 01.29.29.29.29 - www.veleos.fr<br>
+            Code APE 4540Z - N° TVA Intracom. FR 77 808977532<br>
+          </p>
+        </footer>
+    </div>
+  </body>
+  <script type="text/javascript" src="../node_modules/jquery/dist/jquery.js"></script>
+  <script type="text/javascript" src="../js/facture.js"></script>
+  <script>
+    window.onload = function() {
+      var $ = window.jQuery;
+      const queryString = window.location.search;
+      const urlParams = new URLSearchParams(queryString);
+      const lname = urlParams.get('lname');
+      document.getElementById("last_name").innerHTML = lname
+      const fname = urlParams.get('fname');
+      document.getElementById("first_name").innerHTML = fname
+      const adress = urlParams.get('adress');
+      document.getElementById("adress").innerHTML = adress
+      const city = urlParams.get('city');
+      document.getElementById("city").innerHTML = city
+      const zip = urlParams.get('zip');
+      document.getElementById("zip").innerHTML = zip
+      var date = new Date();
+      document.getElementById("year").innerHTML = date.getFullYear();
+      document.getElementById("month").innerHTML = date.getMonth();
+      document.getElementById("day").innerHTML = date.getDate();
+    }
+  </script>
+</html>
