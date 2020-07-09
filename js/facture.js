@@ -1,5 +1,4 @@
 function nbProduct(sel) {
-    console.log(sel)
     var nbProduct = sel.options[sel.selectedIndex].text
     $('.rowProduct').remove();
     for(var i =0;i < nbProduct;i++){
@@ -23,32 +22,76 @@ function typeProduct(sel) {
     var nbDiv = sel.options[sel.selectedIndex].value
     $(".containerVelo"+nbDiv+"").remove();
     if (typeOfProduct == 'Velo'){  
-        $("#"+nbDiv+"").append("<div class='containerVelo"+nbDiv+"'><select id='modelVelo"+nbDiv+"'  onChange='colorProduct(this);'><option></option></select></div>")
+        $("#"+nbDiv+"").append("<div class='containerVelo"+nbDiv+"'><select id='modelVelo"+nbDiv+"'><option></option></select></div>")
         client.query('SELECT model FROM core_velo ORDER BY model DESC',(err,res)=>{
             if (err) { console.error(err); return; }
             else{
                 for(var i =0;i < res.rows.length;i++){
-                    var item = res.rows[i];
-                    var model = item['model'];
-                    $("#modelVelo"+nbDiv+"").append("<option>"+model+"</option>");
+                    let item = res.rows[i];
+                    let model = item['model'];
+                    $("#modelVelo"+nbDiv+"").append("<option  onChange='colorProduct(this);'>"+model+"</option>");
+                }
             }
-        }
+        })
+    }
+    if (typeOfProduct == 'Trottinette'){  
+        $("#"+nbDiv+"").append("<div class='containerVelo"+nbDiv+"'><select id='modelVelo"+nbDiv+"'><option></option></select></div>")
+        client.query('SELECT model FROM trottinette ORDER BY model DESC',(err,res)=>{
+            if (err) { console.error(err); return; }
+            else{
+                for(var i =0;i < res.rows.length;i++){
+                    let item = res.rows[i];
+                    let model = item['model'];
+                    $("#modelVelo"+nbDiv+"").append("<option>"+model+"</option>");
+                }
+            }
+        })
+    }
+    if (typeOfProduct == 'Accessoires'){  
+        $("#"+nbDiv+"").append("<div class='containerVelo"+nbDiv+"'><select id='modelVelo"+nbDiv+"'><option></option></select></div>")
+        client.query('SELECT model FROM accessoire ORDER BY model DESC',(err,res)=>{
+            if (err) { console.error(err); return; }
+            else{
+                for(var i =0;i < res.rows.length;i++){
+                    let item = res.rows[i];
+                    let model = item['model'];
+                    $("#modelVelo"+nbDiv+"").append("<option>"+model+"</option>");
+                }
+            }
         })
     }
 };
 
 function colorProduct(sel) {
-    var typeOfProduct = sel.options[sel.selectedIndex].text
+    var product = sel.options[sel.selectedIndex].text
     var nbDiv = sel.options[sel.selectedIndex].value
-    $(".containerVelo"+nbDiv+"").remove();
-    $("#"+nbDiv+"").append("<div class='containerVelo"+nbDiv+"'><select id='colorVelo"+nbDiv+"'><option></option></select></div>")
-    client.query('SELECT * FROM core_velo',(err,res)=>{
+    $(".containerColor"+nbDiv+"").remove();
+    $("#"+nbDiv+"").append("<div class='containerColor"+nbDiv+"'><select id='colorVelo"+nbDiv+"'><option></option></select></div>")
+    client.query("SELECT id FROM core_velo WHERE model=\'"+product+"\'",(err,res)=>{
         if (err) { console.error(err); return; }
         else{
             for(var i =0;i < res.rows.length;i++){
-                var item = res.rows[i];
-                var color = item['color'];
-                $("#modelVelo"+nbDiv+"").append("<option>"+color+"</option>");
+                let item = res.rows[i];
+                let idProduct = item['id'];
+                client.query("SELECT color_id FROM core_velo_stock WHERE velo_id=\'"+idProduct+"\'",(err,res)=>{
+                    if (err) { console.error(err); return; }
+                    else{
+                        for(var i =0;i < res.rows.length;i++){
+                            let item = res.rows[i];
+                            let color = item['color_id'];
+                            client.query("SELECT * FROM core_color WHERE id=\'"+color+"\'",(err,res)=>{
+                                if (err) { console.error(err); return; }
+                                else{
+                                  for(var i =0;i < res.rows.length;i++){
+                                    let item2 = res.rows[i];
+                                    let couleur = item2['color']
+                                    $("#colorVelo"+nbDiv+"").append("<option>"+couleur+"</option>");
+                                    }
+                                }
+                            })
+                        }
+                    }
+                })
             }
         }
     })

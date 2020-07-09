@@ -13,16 +13,37 @@ client = new Client({
 client.connect()
 function dataBike(){
   client.query('SELECT * FROM core_velo ORDER BY model DESC',(err,res)=>{
-    for(var i =0;i < res.rows.length;i++){
-      var item = res.rows[i];
-      var model = item['model']
-      var taille = item['taille']
-      var moteur = item['moteur']
-      var couleur = item['couleur'] 
-      var prix = item['prix']
-      var quantite = item['quantite']
-      $("#tableDataVelo").append('<tr><td>'+model+'</td><td>'+taille+'</td><td>'+moteur+'</td><td>'+couleur+'</td><td>'+prix+'</td><td>'+quantite+'</td></tr>')
+    if (err) { console.error(err); return; }
+    else{
+      for(var i =0;i < res.rows.length;i++){
+        let item = res.rows[i];
+        let id = item['id']
+        let model = item['model']
+        let prix = item['prix']
+        client.query('SELECT * FROM core_velo_stock WHERE velo_id='+id+'',(err1,res1)=>{
+          if (err1) { console.error(err1); return; }
+          else{
+            for(var i =0;i < res1.rows.length;i++){
+              let item1 = res1.rows[i];
+              let taille = item1['size']
+              let couleur = item1['color_id']
+              let quantite = item1['quantite']
+              client.query('SELECT * FROM core_color WHERE id='+couleur+'',(err2,res2)=>{
+                if (err2) { console.error(err1); return; }
+                else{
+                  for(var i =0;i < res2.rows.length;i++){
+                    let item2 = res2.rows[i];
+                    let couleur = item2['color']
+                $("#tableDataVelo").append('<tr><td>'+model+'</td><td>'+taille+'</td><td>'+couleur+'</td><td>'+quantite+'</td><td>'+prix+' €</td></tr>')
+                  }
+                }
+              })
+            }
+          }
+        })
+      }
     }
     client.end()
   })
 }
+

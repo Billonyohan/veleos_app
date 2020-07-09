@@ -20,7 +20,7 @@ $(document).ready(function() {
         var couleur = item['couleur']
         var prix = item['prix']
         var quantite = item['quantite']
-        $("#tableDataVelo").append('<tr><td>'+model+'</td><td>'+caracteristiques+'</td><td>'+couleur+'</td><td>'+prix+'</td><td>'+quantite+'</td></tr>')
+        $("#tableDataVelo").append('<tr><td>'+model+'</td><td>'+caracteristiques+'</td><td>'+couleur+'</td><td>'+prix+' €</td><td>'+quantite+'</td></tr>')
       }
       client.end()
     })

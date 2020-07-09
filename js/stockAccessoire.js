@@ -19,7 +19,7 @@ $(document).ready(function() {
         var caracteristiques = item['caractéristiques']
         var prix = item['prix']
         var quantite = item['quantite']
-        $("#tableDataVelo").append('<tr><td>'+model+'</td><td>'+caracteristiques+'</td><td>'+prix+'</td><td>'+quantite+'</td></tr>')
+        $("#tableDataVelo").append('<tr><td>'+model+'</td><td>'+caracteristiques+'</td><td>'+prix+' €</td><td>'+quantite+'</td></tr>')
       }
       client.end()
     })
