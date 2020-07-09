@@ -16,7 +16,7 @@ $(document).ready(function() {
       for(var i =0;i < res.rows.length;i++){
         var item = res.rows[i];
         var model = item['model']
-        var caracteristiques = item['caractéristiques']
+        var caracteristiques = item['caracteristiques']
         var prix = item['prix']
         var quantite = item['quantite']
         $("#tableDataVelo").append('<tr><td>'+model+'</td><td>'+caracteristiques+'</td><td>'+prix+' €</td><td>'+quantite+'</td></tr>')

@@ -1,8 +1,8 @@
 function nbProduct(sel) {
-    var nbProduct = sel.options[sel.selectedIndex].text
+    let nbProduct = sel.options[sel.selectedIndex].text
     $('.rowProduct').remove();
     for(var i =0;i < nbProduct;i++){
-        var nFacture = i + 1
+        let nFacture = i + 1
         $("#product").append("<th scope='row' class='rowProduct' id='rowProduct"+i+"'>Produit N°"+nFacture+"</th")
         $("#rowProduct"+i+"").append("<div class='row' syle='margin-top: 40px;' id='"+i+"'><select class='col-xs-2 offset-xs-1' onChange='typeProduct(this);'><option></option><option value='"+i+"'>Velo</option><option value='"+i+"'>Trottinette</option><option value='"+i+"'>Accessoires</option></select></div>")
     }
@@ -22,14 +22,14 @@ function typeProduct(sel) {
     var nbDiv = sel.options[sel.selectedIndex].value
     $(".containerVelo"+nbDiv+"").remove();
     if (typeOfProduct == 'Velo'){  
-        $("#"+nbDiv+"").append("<div class='containerVelo"+nbDiv+"'><select id='modelVelo"+nbDiv+"'><option></option></select></div>")
+        $("#"+nbDiv+"").append("<div class='containerVelo"+nbDiv+"'><select id='modelVelo"+nbDiv+"' onChange='colorProduct(this)'><option></option></select></div>")
         client.query('SELECT model FROM core_velo ORDER BY model DESC',(err,res)=>{
             if (err) { console.error(err); return; }
             else{
                 for(var i =0;i < res.rows.length;i++){
                     let item = res.rows[i];
                     let model = item['model'];
-                    $("#modelVelo"+nbDiv+"").append("<option  onChange='colorProduct(this);'>"+model+"</option>");
+                    $("#modelVelo"+nbDiv+"").append("<option>"+model+"</option>");
                 }
             }
         })
@@ -63,8 +63,8 @@ function typeProduct(sel) {
 };
 
 function colorProduct(sel) {
-    var product = sel.options[sel.selectedIndex].text
-    var nbDiv = sel.options[sel.selectedIndex].value
+    let product = sel.options[sel.selectedIndex].text
+    let nbDiv = sel.options[sel.selectedIndex].value
     $(".containerColor"+nbDiv+"").remove();
     $("#"+nbDiv+"").append("<div class='containerColor"+nbDiv+"'><select id='colorVelo"+nbDiv+"'><option></option></select></div>")
     client.query("SELECT id FROM core_velo WHERE model=\'"+product+"\'",(err,res)=>{

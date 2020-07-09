@@ -43,7 +43,6 @@ function dataBike(){
         })
       }
     }
-    client.end()
   })
 }
 
