@@ -4,7 +4,7 @@ function nbProduct(sel) {
     for(var i =0;i < nbProduct;i++){
         let nFacture = i + 1
         $("#product").append("<th scope='row' class='rowProduct' id='rowProduct"+i+"'>Produit N°"+nFacture+"</th")
-        $("#rowProduct"+i+"").append("<div class='row' syle='margin-top: 40px;' id='"+i+"'><select class='col-xs-2 offset-xs-1' onChange='typeProduct(this);'><option></option><option value='"+i+"'>Velo</option><option value='"+i+"'>Trottinette</option><option value='"+i+"'>Accessoires</option></select></div>")
+        $("#rowProduct"+i+"").append("<div class='row' syle='margin-top: 40px;' id='"+i+"'><select id='typeOfProduct"+i+"' onChange='typeProduct(this);'><option></option><option value='"+i+"'>Velo</option><option value='"+i+"'>Trottinette</option><option value='"+i+"'>Accessoires</option></select></div>")
     }
 }
 
@@ -139,6 +139,69 @@ function printFacture(){
     var zip = document.getElementById("zip").value;
     var email = document.getElementById("email").value;
     var phone = document.getElementById("phone").value;
+    var divNbProduct = document.getElementById('nombProduct');
+    var nbProduct = divNbProduct.options[divNbProduct.selectedIndex].text;
+    for(var i=0; i < nbProduct;i++){
+        var typeOfProduct = document.getElementById('typeOfProduct'+i+'');
+        var productType = typeOfProduct.options[typeOfProduct.selectedIndex].text;
+        if (productType === 'Velo'){
+            let divVelo = document.getElementById('containerVelo'+i+'');
+            var velo = divVelo.options[divVelo.selectedIndex].text;
+            client.query("SELECT prix FROM core_velo WHERE model=\'"+velo+"\'",(err,res)=>{
+                if (err) { console.error(err); return; }
+                else{
+                    for(var i =0;i < res.rows.length;i++){
+                        let item = res.rows[i];
+                        var prix = item['prix'];
+                        console.log(prix)
+                    let veloSplit = velo.split(' ').join('');
+                    let divQuantiteVelo = document.getElementById(''+veloSplit+'');
+                    var quantiteVelo = divQuantiteVelo.options[divQuantiteVelo.selectedIndex].text;
+                    }
+                    product[i] = [];
+                    product[i].push(velo, prix, quantiteVelo)
+                }
+            })
+        }
+        if (productType === 'Trottinette'){
+            let divTrottinette = document.getElementById('containerTrottinette'+i+'');
+            let trottinette = divTrottinette.options[divTrottinette.selectedIndex].text;
+            client.query("SELECT prix FROM trottinette WHERE model=\'"+trottinette+"\'",(err,res)=>{
+                if (err) { console.error(err); return; }
+                else{
+                    for(var i =0;i < res.rows.length;i++){
+                        let item = res.rows[i];
+                        var prix = item['prix'];
+                        console.log(prix)
+                        let trottinetteSplit = trottinette.split(' ').join('');
+                        let divQuantiteTrottinette = document.getElementById(''+trottinetteSplit+'');
+                        var quantiteTrottinette = divQuantiteTrottinette.options[divQuantiteTrottinette.selectedIndex].text;
+                    }
+                    product[i] = [];
+                    product[i].push(trottinette, prix, quantiteTrottinette)
+                }
+            })
+        }
+        if (productType === 'Accessoires'){
+            let divAccessoire = document.getElementById('containerAccessoire'+i+'');
+            let accessoire = divAccessoire.options[divAccessoire.selectedIndex].text;
+            client.query("SELECT prix FROM accessoire WHERE model=\'"+accessoire+"\'",(err,res)=>{
+                if (err) { console.error(err); return; }
+                else{
+                    for(var i =0;i < res.rows.length;i++){
+                        let item = res.rows[i];
+                        var prix = item['prix'];
+                        console.log(prix)
+                        let accessoireSplit = accessoire.split(' ').join('');
+                        let divQuantiteAccessoire = document.getElementById(''+accessoireSplit+'');
+                        var quantiteAccessoire = divQuantiteAccessoire.options[divQuantiteAccessoire.selectedIndex].text;
+                    }
+                    product[i] = [];
+                    product[i].push(accessoire, prix, quantiteAccessoire)
+                }
+            })
+        }
+    }
     if (fname === 0 || lname.length === 0 || adress.length === 0 || city.length === 0 || zip.length === 0){
         //pass
     }
