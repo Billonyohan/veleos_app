@@ -153,13 +153,10 @@ function printFacture(){
                     for(var i =0;i < res.rows.length;i++){
                         let item = res.rows[i];
                         var prix = item['prix'];
-                        console.log(prix)
                     let veloSplit = velo.split(' ').join('');
                     let divQuantiteVelo = document.getElementById(''+veloSplit+'');
                     var quantiteVelo = divQuantiteVelo.options[divQuantiteVelo.selectedIndex].text;
                     }
-                    product[i] = [];
-                    product[i].push(velo, prix, quantiteVelo)
                 }
             })
         }
@@ -172,13 +169,10 @@ function printFacture(){
                     for(var i =0;i < res.rows.length;i++){
                         let item = res.rows[i];
                         var prix = item['prix'];
-                        console.log(prix)
                         let trottinetteSplit = trottinette.split(' ').join('');
                         let divQuantiteTrottinette = document.getElementById(''+trottinetteSplit+'');
                         var quantiteTrottinette = divQuantiteTrottinette.options[divQuantiteTrottinette.selectedIndex].text;
                     }
-                    product[i] = [];
-                    product[i].push(trottinette, prix, quantiteTrottinette)
                 }
             })
         }
@@ -191,13 +185,10 @@ function printFacture(){
                     for(var i =0;i < res.rows.length;i++){
                         let item = res.rows[i];
                         var prix = item['prix'];
-                        console.log(prix)
                         let accessoireSplit = accessoire.split(' ').join('');
                         let divQuantiteAccessoire = document.getElementById(''+accessoireSplit+'');
                         var quantiteAccessoire = divQuantiteAccessoire.options[divQuantiteAccessoire.selectedIndex].text;
                     }
-                    product[i] = [];
-                    product[i].push(accessoire, prix, quantiteAccessoire)
                 }
             })
         }
@@ -206,7 +197,8 @@ function printFacture(){
         //pass
     }
     else{
-    myWindow = window.open("factureToPrint.html?fname="+fname+"&lname="+lname+"&adress="+adress+"&city="+city+"&zip="+zip, "myWindow", "width=1000,height=1000");
+        url = "factureToPrint.html?fname="+fname+"&lname="+lname+"&adress="+adress+"&city="+city+"&zip="+zip
+        myWindow = window.open(url, "width=1000,height=1000");
     }
 };
 
