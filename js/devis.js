@@ -131,7 +131,7 @@ function quantiteAccessoire(sel){
     })
 };
 
-function printFacture(){
+function printDevis(){
     var fname = document.getElementById("fname").value;
     var lname = document.getElementById("lname").value;
     var adress = document.getElementById("adress").value;
@@ -201,7 +201,7 @@ function printFacture(){
         //pass
     }
     else{
-        url = "factureToPrint.html?fname="+fname+"&lname="+lname+"&adress="+adress+"&city="+city+"&zip="+zip+"&nbProduct="+nbProduct+"&productList="+listProduct
+        url = "devisToPrint.html?fname="+fname+"&lname="+lname+"&adress="+adress+"&city="+city+"&zip="+zip+"&nbProduct="+nbProduct+"&productList="+listProduct
         myWindow = window.open(url, "width=1000,height=1000");
     }
 };
