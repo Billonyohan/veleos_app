@@ -141,7 +141,6 @@ function printFacture(){
     var phone = document.getElementById("phone").value;
     var divNbProduct = document.getElementById('nombProduct');
     var nbProduct = divNbProduct.options[divNbProduct.selectedIndex].text;
-    var listProduct = [];
     for(var i=0; i < nbProduct;i++){
         var typeOfProduct = document.getElementById('typeOfProduct'+i+'');
         var productType = typeOfProduct.options[typeOfProduct.selectedIndex].text;
@@ -157,7 +156,9 @@ function printFacture(){
                     let veloSplit = velo.split(' ').join('');
                     let divQuantiteVelo = document.getElementById(''+veloSplit+'');
                     var quantiteVelo = divQuantiteVelo.options[divQuantiteVelo.selectedIndex].text;
-                    listProduct.push(velo, prix, quantiteVelo);
+                    var product = [velo, prix, quantiteVelo]
+                    url = "factureToPrint.html?fname="+fname+"&lname="+lname+"&adress="+adress+"&city="+city+"&zip="+zip+"&nbProduct="+nbProduct+"&listProduct="+product
+                    console.log(url)
                     }
                 }
             })
@@ -201,7 +202,6 @@ function printFacture(){
         //pass
     }
     else{
-        url = "factureToPrint.html?fname="+fname+"&lname="+lname+"&adress="+adress+"&city="+city+"&zip="+zip+"&nbProduct="+nbProduct+"&productList="+listProduct
         myWindow = window.open(url, "width=1000,height=1000");
     }
 };

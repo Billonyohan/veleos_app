@@ -52,10 +52,10 @@
         </table>
         <div style="margin-top: 25px;margin-left: 190px;">
           <table class="table table-sm text-right" style="margin-left:144px;border: 1px solid black; text-align: center;">
-            <tr id="totalHT">
+            <tr id="totalHorsTaxe">
               <td><strong>Total HT</strong></td>
             </tr>
-            <tr id="totalTva">
+            <tr id="totalTVA">
               <td>TVA 20%</td>
             </tr>
             <tr id="totalTTC">
@@ -100,8 +100,8 @@
       document.getElementById("month").innerHTML = date.getMonth();
       document.getElementById("day").innerHTML = date.getDate();
       const nbProduct = urlParams.get('nbProduct');
-      for(var i =1; i< nbProduct+1;i++){
-        const product = urlParams.get('productList')
+      for(var i =0; i< nbProduct;i++){
+        const product = urlParams.get('listProduct')
         var res = product.split(",");
         description = res[0];
         quantite = res[2]
@@ -117,19 +117,18 @@
         $("#"+i+"").append("<td id='tva"+i+"'>"+tva+"</td>");
         $("#"+i+"").append("<td>"+totalTTC+"</td>");
       }
-    
-      for(var i =1; i< nbProduct+1;i++){
-        let horsTaxe = document.getElementById("totalHT"+i+"")
-        var totalHorsTaxes = totalHorsTaxes + horsTaxe
-        console.log(totalHorsTaxes)
-        let getTva = document.getElementById("tva"+i+"")
-        let totalTva = (getTva + totalTva).toFixed(2)
+      var totalHorsTaxes = 0;
+      var totalTva = 0;
+      for(var i =0; i< nbProduct;i++){
+        let horsTaxe = document.getElementById("totalHT"+i+"").innerHTML;
+        totalHorsTaxes +=  horsTaxe
+        var getTva = document.getElementById("tva"+i+"").innerHTML;
+        totalTva += getTva
+      $("#totalHorsTaxe").append("<td class=text-right>"+totalHorsTaxes+"</td>")
+      $("#totalTVA").append("<td class=text-right>"+totalTva+"</td>")
+      let totalTtc = totalHorsTaxes + totalTva
+      $("#totalTTC").append("<td class=text-right>"+totalTtc+"</td>")
       }
-    $("#totalHT").append("<td class=text-right>"+totalHorsTaxes+"</td>")
-    $("#totalTva").append("<td class=text-right>"+totalTva+"</td>")
-    let totalTTC = totalHorsTaxes + totalTva
-    $("#totalTTC").append("<td class=text-right>"+totalTTC+"</td>")
-
     }
   </script>
 </html>
