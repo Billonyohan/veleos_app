@@ -7,6 +7,29 @@
     "start": "electron .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+
+  "build": {
+    "productName": "MyApp",
+    "copyright": "Copyright © 2019 VELEOS",
+    "mac": {
+      "icon": "./public/icons/mac/icon.icns",
+      "category": "public.app-category.utilities"
+    },
+    "win": {
+      "icon": "./public/icons/png/256x256.png"
+    },
+    "files": [
+      "./build/**/*",
+      "./dist/**/*",
+      "./node_modules/**/*",
+      "./public/**/*",
+      "*.js"
+    ],
+    "directories": {
+      "buildResources": "public"
+    }
+  },
+
   "author": "",
   "license": "ISC",
   "devDependencies": {

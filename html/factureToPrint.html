@@ -3,15 +3,14 @@
   <head>
     <meta charset="UTF-8">
   </head>
-  <style type="text/css">td{padding-left: 15px;padding-right: 15px;padding-top: 5px;padding-bottom: 5px;}table, td {border: 1px solid black;text-align: center;}body{background: #ccc;padding: 30px;}.container{width: 21cm;min-height: 29.7cm;}.invoice{background: white;width: 100%;padding: 50px;}.row{display: grid;grid-template-columns: 1fr 1fr;}#logo{float: left;margin-left: 88px;width: 2.5cm;}.document-type{float: right;margin-right: 30px;text-align: right;color: #444;}p{margin-left: 40px;}table{margin-left:auto;margin-right:auto;vertical-align:middle;border: 1px solid black; text-align: center;}footer{position: absolute;bottom: 0;width: 850px;}.bottom-page{font-size: 0.7em;border: 1px solid black;text-align: center;}.divCity{margin-right: 10px;}table{margin-left:auto;margin-right:auto;vertical-align:middle;border: 1px solid black; text-align: center;margin-top: 10px;}</style>
+  <style type="text/css">td{padding-left: 15px;padding-right: 15px;padding-top: 5px;padding-bottom: 5px;}table, td {border: 1px solid black;text-align: center;}body{background: #ccc;padding: 30px;}.container{width: 21cm;min-height: 29.7cm;}.invoice{background: white;width: 100%;padding: 50px;}.row{display: grid;grid-template-columns: 1fr 1fr;}#logo{float: left;margin-left: 60px;width: 4cm;}.document-type{float: right;margin-right: 30px;text-align: right;color: #444;}p{margin-left: 40px;}table{margin-left:auto;margin-right:auto;vertical-align:middle;border: 1px solid black; text-align: center;}footer{position: absolute;bottom: 0;width: 850px;}.bottom-page{font-size: 0.7em;border: 1px solid black;text-align: center;}.divCity{margin-right: 10px;}table{margin-left:auto;margin-right:auto;vertical-align:middle;border: 1px solid black; text-align: center;margin-top: 10px;}</style>
   <body>
     <div class="container" onclick="print()">
       <div class="invoice">
         <div class="row">
           <img src="../img/logo.png" alt="logo" id="logo" class="logo">
-          <h1 class="document-type display-4">FACTURE</h1>
+          <div class="document-type display-4"><h1 style="margin-right: 10px;">FACTURE</h1><div class="row" style="display:inline-block"><strong style="float: right;margin-right: 45px;display:inline-flex;">N°90T-<div id="day"></div>-<div id="month"></div>-<div id="year"></div></strong></div></h1></div>
           <div></div>
-          <div class="row" style="display:inline-block"><strong style="float: right;margin-right: 45px;display:inline-flex;">N°90T-<div id="day"></div>-<div id="month"></div>-<div id="year"></div></strong></div>
         </div>
         <br>
         <div class="row">
@@ -29,39 +28,39 @@
           <div class="col-5">
             <br><br>
             <div style="float: right;margin-right: 40px;">
-              <strong class="row" style="display: grid;grid-template-columns: 1fr 1fr;"><div id="last_name"></div><div id="first_name"></div></strong><br>
+              <strong class="row" style="display: grid;grid-template-columns: 1fr 1fr;"><div id="last_name" style="margin-right: 10px;"></div><div id="first_name"></div></strong><br>
               <div id="adress"></div><br>
-              <div class="row"><div class="divCity" id="city" style="text-transform: uppercase;"></div><div id="zip"></div></div>
+              <div class="row"><div id="zip"></div><div class="divCity" id="city" style="text-transform: uppercase;"></div></div>
             </div>
           </div>
         </div>
         <br><br><br><br>
         <div class="containerTable">
-          <table class="table table-striped">
+          <table class="table table-striped" style="width:100%;">
             <thead>
               <tr>
                 <th>Description</th>
                 <th>Quantité</th>
                 <th>PU HT</th>
                 <th>Total HT</th>
-                <th>TVA 20%</th>
-                <th>Total TTC</th>
               </tr>
             </thead>
             <tbody>
             </tbody>
           </table>
-          <table class="table2 table-sm text-right">
-            <tr id="totalHorsTaxe">
-              <td><strong>Total HT</strong></td>
-            </tr>
-            <tr id="totalTVA">
-              <td>TVA 20%</td>
-            </tr>
-            <tr id="totalTTC">
-              <td><strong>Total TTC</strong></td>
-            </tr>
-          </table>
+          <div class="my-auto">
+            <table class="table2 table-sm text-right" style="width: 50%;">
+              <tr id="totalHorsTaxe">
+                <td><strong>Total HT</strong></td>
+              </tr>
+              <tr id="totalTVA">
+                <td>TVA 20%</td>
+              </tr>
+              <tr id="totalTTC">
+                <td><strong>Total TTC</strong></td>
+              </tr>
+            </table>
+          </div>
         </div>
         <br>
         <br>
@@ -99,13 +98,14 @@
       document.getElementById("year").innerHTML = date.getFullYear();
       document.getElementById("month").innerHTML = date.getMonth();
       document.getElementById("day").innerHTML = date.getDate();
-      const nbProduct = urlParams.get('nbProduct');
-      const product = urlParams.get('listProduct')
-      var res = product.split(",");
-      productType = res[0];
-      if (productType === 'Velo'){
-        for(var i =0; i< nbProduct;i++){
-          const product = urlParams.get('listProduct')
+      var nbProduct = urlParams.get('nbProduct');
+      var totalHorsTaxes = 0;
+      var totalTva = 0;
+      for(var i=0;i < nbProduct;i++){
+        var product = urlParams.get('listProduct'+[i]+'')
+        var res = product.split(",");
+        productType = res[0];
+        if (productType === 'Velo'){
           var res = product.split(",");
           description = res[1];
           serieNumber = res[4]
@@ -113,61 +113,41 @@
           quantite = res[3]
           totalTTC = (res[2] * quantite).toFixed(2)
           totalHT = ((totalTTC * 100)/120).toFixed(2)
+          totalHorsTaxes += Number(totalHT)
           tva = (totalTTC - totalHT).toFixed(2)
+          totalTva += Number(tva)
           puHT = (totalHT/quantite).toFixed(2)
           $("tbody").append("<tr id="+i+"></tr>");
-          $("#"+i+"").append("<td id='description'>"+description+"</td>");
-          $("#description").append("<div>N°serie :"+serieNumber+"</div><div>N°batterie :"+serieNumber+"</div>")
+          $("#"+i+"").append("<td id='description"+[i]+"'>"+description+"</td>");
+          $("#description"+[i]+"").append("<div>N°serie :"+serieNumber+"</div><div>N°batterie :"+serieNumber+"</div>")
           $("#"+i+"").append("<td>"+quantite+"</td>");
-          $("#"+i+"").append("<td>"+puHT+"</td>");
-          $("#"+i+"").append("<td id='totalHT"+i+"'>"+totalHT+"</td>");
-          $("#"+i+"").append("<td id='tva"+i+"'>"+tva+"</td>");
-          $("#"+i+"").append("<td>"+totalTTC+"</td>");
+          $("#"+i+"").append("<td>"+puHT+" €</td>");
+          $("#"+i+"").append("<td id='totalHT"+i+"'>"+totalHT+" €</td>");
         }
-        var totalHorsTaxes = 0;
-        var totalTva = 0;
-        for(var i =0; i< nbProduct;i++){
-          let horsTaxe = Number(document.getElementById("totalHT"+i+"").innerHTML);
-          totalHorsTaxes +=  horsTaxe
-          var getTva = Number(document.getElementById("tva"+i+"").innerHTML);
-          totalTva += getTva
-        $("#totalHorsTaxe").append("<td class=text-right>"+totalHorsTaxes+"</td>")
-        $("#totalTVA").append("<td class=text-right>"+totalTva+"</td>")
-        let totalTtc = totalHorsTaxes + totalTva
-        $("#totalTTC").append("<td class=text-right>"+totalTtc+"</td>")
-        }
-      }
-      else{
-        for(var i =0; i< nbProduct;i++){
-          const product = urlParams.get('listProduct')
+        else{
+          const product = urlParams.get('listProduct'+[i]+'')
           var res = product.split(",");
           description = res[0];
           quantite = res[2]
           totalTTC = (res[1] * quantite).toFixed(2)
           totalHT = ((totalTTC * 100)/120).toFixed(2)
+          totalHorsTaxes += Number(totalHT)
           tva = (totalTTC - totalHT).toFixed(2)
+          totalTva += Number(tva)
           puHT = (totalHT/quantite).toFixed(2)
           $("tbody").append("<tr id="+i+"></tr>");
           $("#"+i+"").append("<td id='description'>"+description+"</td>");
           $("#"+i+"").append("<td>"+quantite+"</td>");
-          $("#"+i+"").append("<td>"+puHT+"</td>");
-          $("#"+i+"").append("<td id='totalHT"+i+"'>"+totalHT+"</td>");
-          $("#"+i+"").append("<td id='tva"+i+"'>"+tva+"</td>");
-          $("#"+i+"").append("<td>"+totalTTC+"</td>");
-        }
-        var totalHorsTaxes = 0;
-        var totalTva = 0;
-        for(var i =0; i< nbProduct;i++){
-          let horsTaxe = Number(document.getElementById("totalHT"+i+"").innerHTML);
-          totalHorsTaxes +=  horsTaxe
-          var getTva = Number(document.getElementById("tva"+i+"").innerHTML);
-          totalTva += getTva
-        $("#totalHorsTaxe").append("<td class=text-right>"+totalHorsTaxes+"</td>")
-        $("#totalTVA").append("<td class=text-right>"+totalTva+"</td>")
-        let totalTtc = totalHorsTaxes + totalTva
-        $("#totalTTC").append("<td class=text-right>"+totalTtc+"</td>")
+          $("#"+i+"").append("<td>"+puHT+" €</td>");
+          $("#"+i+"").append("<td id='totalHT"+i+"'>"+totalHT+" €</td>");
         }
       }
+      totalHorsTaxes = totalHorsTaxes.toFixed(2)
+      totalTva = totalTva.toFixed(2)
+      $("#totalHorsTaxe").append("<td class=text-right>"+totalHorsTaxes+" €</td>")
+      $("#totalTVA").append("<td class=text-right>"+totalTva+" €</td>")
+      let totalTtc = Number(totalHorsTaxes) + Number(totalTva)
+      $("#totalTTC").append("<td class=text-right>"+totalTtc+" €</td>")
     }
   </script>
 </html>
