@@ -4,7 +4,7 @@ function nbProduct(sel) {
     for(var i =0;i < nbProduct;i++){
         let nFacture = i + 1
         $("#product").append("<th scope='row' class='rowProduct' id='rowProduct"+i+"'>Produit N°"+nFacture+"</th")
-        $("#rowProduct"+i+"").append("<div class='row' syle='margin-top: 40px;' id='"+i+"'><select id='typeOfProduct"+i+"' onChange='typeProduct(this);'><option></option><option value='"+i+"'>Velo</option><option value='"+i+"'>Trottinette</option><option value='"+i+"'>Accessoires</option></select></div>")
+        $("#rowProduct"+i+"").append("<div class='containerProduct' id='"+i+"'><select id='typeOfProduct"+i+"' onChange='typeProduct(this);'><option></option><option value='"+i+"'>Velo</option><option value='"+i+"'>Trottinette</option><option value='"+i+"'>Accessoires</option></select></div>")
     }
 }
 
@@ -73,7 +73,7 @@ function quantiteVelo(sel){
     var productSplit = product.split(' ').join('');
     var nbDiv = sel.id
     $("#quantiteVelo"+nbDiv+"").remove();
-    $("."+nbDiv+"").append("<div id='quantiteVelo"+nbDiv+"'><select id="+productSplit+"><option></option></select></div>");
+    $("."+nbDiv+"").append("<div id='quantiteVelo"+nbDiv+"'><select id="+productSplit+" onChange='matchingNumber("+nbDiv+")'><option></option></select></div>");
     client.query("SELECT id FROM core_velo WHERE model=\'"+product+"\'",(err,res)=>{
         if (err) { console.error(err); return; }
         else{
@@ -88,6 +88,14 @@ function quantiteVelo(sel){
         }
     })
 };
+
+function matchingNumber(nbDiv){
+    nbDiv = nbDiv.id
+    $("."+nbDiv+"").append("<input type='text' id='serie' placeholder='N° serie' required>")
+    $("."+nbDiv+"").append("<div class='row'></div>")
+    $("."+nbDiv+"").append("<input type='text' id='battery' placeholder='N° batterie' required>")
+    
+}
 
 function quantiteTrottinette(sel){
     var product = sel.options[sel.selectedIndex].text
@@ -156,9 +164,10 @@ function printFacture(){
                     let veloSplit = velo.split(' ').join('');
                     let divQuantiteVelo = document.getElementById(''+veloSplit+'');
                     var quantiteVelo = divQuantiteVelo.options[divQuantiteVelo.selectedIndex].text;
-                    var product = [velo, prix, quantiteVelo]
+                    var serieNumber = document.getElementById("serie").value;
+                    var batteryNumber = document.getElementById("battery").value;
+                    var product = [productType, velo, prix, quantiteVelo, serieNumber, batteryNumber]
                     url = "factureToPrint.html?fname="+fname+"&lname="+lname+"&adress="+adress+"&city="+city+"&zip="+zip+"&nbProduct="+nbProduct+"&listProduct="+product
-                    console.log(url)
                     }
                 }
             })
@@ -175,7 +184,8 @@ function printFacture(){
                         let trottinetteSplit = trottinette.split(' ').join('');
                         let divQuantiteTrottinette = document.getElementById(''+trottinetteSplit+'');
                         var quantiteTrottinette = divQuantiteTrottinette.options[divQuantiteTrottinette.selectedIndex].text;
-                        listProduct.push(trottinette, prix, quantiteTrottinette);
+                        var product = [trottinette, prix, quantiteTrottinette]
+                        url = "factureToPrint.html?fname="+fname+"&lname="+lname+"&adress="+adress+"&city="+city+"&zip="+zip+"&nbProduct="+nbProduct+"&listProduct="+product
                     }
                 }
             })
@@ -192,7 +202,8 @@ function printFacture(){
                         let accessoireSplit = accessoire.split(' ').join('');
                         let divQuantiteAccessoire = document.getElementById(''+accessoireSplit+'');
                         var quantiteAccessoire = divQuantiteAccessoire.options[divQuantiteAccessoire.selectedIndex].text;
-                        listProduct.push(accessoire, prix, quantiteAccessoire);
+                        var product = [accessoire, prix, quantiteAccessoire]
+                        url = "factureToPrint.html?fname="+fname+"&lname="+lname+"&adress="+adress+"&city="+city+"&zip="+zip+"&nbProduct="+nbProduct+"&listProduct="+product
                     }
                 }
             })
@@ -202,7 +213,7 @@ function printFacture(){
         //pass
     }
     else{
-        myWindow = window.open(url, "width=1000,height=1000");
+        myWindow = window.open(url,"Facture", "width=1300,height=1300");
     }
 };
 

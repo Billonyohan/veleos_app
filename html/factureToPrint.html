@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8">
   </head>
-  <style type="text/css">td{padding-left: 15px;padding-right: 15px;padding-top: 5px;padding-bottom: 5px;}table, td {border: 1px solid black;text-align: center;}body{background: #ccc;padding: 30px;}.container{width: 21cm;min-height: 29.7cm;}.invoice{background: white;width: 100%;padding: 50px;}.row{display: grid;grid-template-columns: 1fr 1fr;}#logo{float: left;margin-left: 88px;width: 2.5cm;}.document-type{float: right;margin-right: 30px;text-align: right;color: #444;}p{margin-left: 40px;}table{margin-left:auto;margin-right:auto;vertical-align:middle;border: 1px solid black; text-align: center;}footer{position: absolute;bottom: 0;width: 850px;}.bottom-page{font-size: 0.7em;border: 1px solid black;text-align: center;}.divCity{margin-right: 10px;}</style>
+  <style type="text/css">td{padding-left: 15px;padding-right: 15px;padding-top: 5px;padding-bottom: 5px;}table, td {border: 1px solid black;text-align: center;}body{background: #ccc;padding: 30px;}.container{width: 21cm;min-height: 29.7cm;}.invoice{background: white;width: 100%;padding: 50px;}.row{display: grid;grid-template-columns: 1fr 1fr;}#logo{float: left;margin-left: 88px;width: 2.5cm;}.document-type{float: right;margin-right: 30px;text-align: right;color: #444;}p{margin-left: 40px;}table{margin-left:auto;margin-right:auto;vertical-align:middle;border: 1px solid black; text-align: center;}footer{position: absolute;bottom: 0;width: 850px;}.bottom-page{font-size: 0.7em;border: 1px solid black;text-align: center;}.divCity{margin-right: 10px;}table{margin-left:auto;margin-right:auto;vertical-align:middle;border: 1px solid black; text-align: center;margin-top: 10px;}</style>
   <body>
     <div class="container" onclick="print()">
       <div class="invoice">
@@ -36,22 +36,22 @@
           </div>
         </div>
         <br><br><br><br>
-        <table class="table table-striped">
-          <thead>
-            <tr>
-              <th>Description</th>
-              <th>Quantité</th>
-              <th>PU HT</th>
-              <th>Total HT</th>
-              <th>TVA 20%</th>
-              <th>Total TTC</th>
-            </tr>
-          </thead>
-          <tbody>
-          </tbody>
-        </table>
-        <div style="margin-top: 25px;margin-left: 190px;">
-          <table class="table table-sm text-right" style="margin-left:144px;border: 1px solid black; text-align: center;">
+        <div class="containerTable">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Description</th>
+                <th>Quantité</th>
+                <th>PU HT</th>
+                <th>Total HT</th>
+                <th>TVA 20%</th>
+                <th>Total TTC</th>
+              </tr>
+            </thead>
+            <tbody>
+            </tbody>
+          </table>
+          <table class="table2 table-sm text-right">
             <tr id="totalHorsTaxe">
               <td><strong>Total HT</strong></td>
             </tr>
@@ -100,34 +100,73 @@
       document.getElementById("month").innerHTML = date.getMonth();
       document.getElementById("day").innerHTML = date.getDate();
       const nbProduct = urlParams.get('nbProduct');
-      for(var i =0; i< nbProduct;i++){
-        const product = urlParams.get('listProduct')
-        var res = product.split(",");
-        description = res[0];
-        quantite = res[2]
-        totalTTC = (res[1] * quantite).toFixed(2)
-        totalHT = ((totalTTC * 100)/120).toFixed(2)
-        tva = (totalTTC - totalHT).toFixed(2)
-        puHT = (totalHT/quantite).toFixed(2)
-        $("tbody").append("<tr id="+i+"></tr>");
-        $("#"+i+"").append("<td>"+description+"</td>");
-        $("#"+i+"").append("<td>"+quantite+"</td>");
-        $("#"+i+"").append("<td>"+puHT+"</td>");
-        $("#"+i+"").append("<td id='totalHT"+i+"'>"+totalHT+"</td>");
-        $("#"+i+"").append("<td id='tva"+i+"'>"+tva+"</td>");
-        $("#"+i+"").append("<td>"+totalTTC+"</td>");
+      const product = urlParams.get('listProduct')
+      var res = product.split(",");
+      productType = res[0];
+      if (productType === 'Velo'){
+        for(var i =0; i< nbProduct;i++){
+          const product = urlParams.get('listProduct')
+          var res = product.split(",");
+          description = res[1];
+          serieNumber = res[4]
+          batteryNumber = res[5]
+          quantite = res[3]
+          totalTTC = (res[2] * quantite).toFixed(2)
+          totalHT = ((totalTTC * 100)/120).toFixed(2)
+          tva = (totalTTC - totalHT).toFixed(2)
+          puHT = (totalHT/quantite).toFixed(2)
+          $("tbody").append("<tr id="+i+"></tr>");
+          $("#"+i+"").append("<td id='description'>"+description+"</td>");
+          $("#description").append("<div>N°serie :"+serieNumber+"</div><div>N°batterie :"+serieNumber+"</div>")
+          $("#"+i+"").append("<td>"+quantite+"</td>");
+          $("#"+i+"").append("<td>"+puHT+"</td>");
+          $("#"+i+"").append("<td id='totalHT"+i+"'>"+totalHT+"</td>");
+          $("#"+i+"").append("<td id='tva"+i+"'>"+tva+"</td>");
+          $("#"+i+"").append("<td>"+totalTTC+"</td>");
+        }
+        var totalHorsTaxes = 0;
+        var totalTva = 0;
+        for(var i =0; i< nbProduct;i++){
+          let horsTaxe = Number(document.getElementById("totalHT"+i+"").innerHTML);
+          totalHorsTaxes +=  horsTaxe
+          var getTva = Number(document.getElementById("tva"+i+"").innerHTML);
+          totalTva += getTva
+        $("#totalHorsTaxe").append("<td class=text-right>"+totalHorsTaxes+"</td>")
+        $("#totalTVA").append("<td class=text-right>"+totalTva+"</td>")
+        let totalTtc = totalHorsTaxes + totalTva
+        $("#totalTTC").append("<td class=text-right>"+totalTtc+"</td>")
+        }
       }
-      var totalHorsTaxes = 0;
-      var totalTva = 0;
-      for(var i =0; i< nbProduct;i++){
-        let horsTaxe = document.getElementById("totalHT"+i+"").innerHTML;
-        totalHorsTaxes +=  horsTaxe
-        var getTva = document.getElementById("tva"+i+"").innerHTML;
-        totalTva += getTva
-      $("#totalHorsTaxe").append("<td class=text-right>"+totalHorsTaxes+"</td>")
-      $("#totalTVA").append("<td class=text-right>"+totalTva+"</td>")
-      let totalTtc = totalHorsTaxes + totalTva
-      $("#totalTTC").append("<td class=text-right>"+totalTtc+"</td>")
+      else{
+        for(var i =0; i< nbProduct;i++){
+          const product = urlParams.get('listProduct')
+          var res = product.split(",");
+          description = res[0];
+          quantite = res[2]
+          totalTTC = (res[1] * quantite).toFixed(2)
+          totalHT = ((totalTTC * 100)/120).toFixed(2)
+          tva = (totalTTC - totalHT).toFixed(2)
+          puHT = (totalHT/quantite).toFixed(2)
+          $("tbody").append("<tr id="+i+"></tr>");
+          $("#"+i+"").append("<td id='description'>"+description+"</td>");
+          $("#"+i+"").append("<td>"+quantite+"</td>");
+          $("#"+i+"").append("<td>"+puHT+"</td>");
+          $("#"+i+"").append("<td id='totalHT"+i+"'>"+totalHT+"</td>");
+          $("#"+i+"").append("<td id='tva"+i+"'>"+tva+"</td>");
+          $("#"+i+"").append("<td>"+totalTTC+"</td>");
+        }
+        var totalHorsTaxes = 0;
+        var totalTva = 0;
+        for(var i =0; i< nbProduct;i++){
+          let horsTaxe = Number(document.getElementById("totalHT"+i+"").innerHTML);
+          totalHorsTaxes +=  horsTaxe
+          var getTva = Number(document.getElementById("tva"+i+"").innerHTML);
+          totalTva += getTva
+        $("#totalHorsTaxe").append("<td class=text-right>"+totalHorsTaxes+"</td>")
+        $("#totalTVA").append("<td class=text-right>"+totalTva+"</td>")
+        let totalTtc = totalHorsTaxes + totalTva
+        $("#totalTTC").append("<td class=text-right>"+totalTtc+"</td>")
+        }
       }
     }
   </script>
