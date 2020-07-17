@@ -4,7 +4,7 @@ function nbProduct(sel) {
     for(var i =0;i < nbProduct;i++){
         let nFacture = i + 1
         $("#product").append("<th scope='row' class='rowProduct' id='rowProduct"+i+"'>Produit N°"+nFacture+"</th")
-        $("#rowProduct"+i+"").append("<div class='row' syle='margin-top: 40px;' id='"+i+"'><select id='typeOfProduct"+i+"' onChange='typeProduct(this);'><option></option><option value='"+i+"'>Velo</option><option value='"+i+"'>Trottinette</option><option value='"+i+"'>Accessoires</option></select></div>")
+        $("#rowProduct"+i+"").append("<div class='containerProduct' id='"+i+"'><select id='typeOfProduct"+i+"' onChange='typeProduct(this);'><option></option><option value='"+i+"'>Velo</option><option value='"+i+"'>Trottinette</option><option value='"+i+"'>Accessoires</option></select></div>")
     }
 }
 
@@ -73,7 +73,7 @@ function quantiteVelo(sel){
     var productSplit = product.split(' ').join('');
     var nbDiv = sel.id
     $("#quantiteVelo"+nbDiv+"").remove();
-    $("."+nbDiv+"").append("<div id='quantiteVelo"+nbDiv+"'><select id="+productSplit+"><option></option></select></div>");
+    $("."+nbDiv+"").append("<div id='quantiteVelo"+nbDiv+"'><select id="+productSplit+" onChange='matchingNumber("+nbDiv+")'><option></option></select></div>");
     client.query("SELECT id FROM core_velo WHERE model=\'"+product+"\'",(err,res)=>{
         if (err) { console.error(err); return; }
         else{
@@ -88,6 +88,14 @@ function quantiteVelo(sel){
         }
     })
 };
+
+function matchingNumber(nbDiv){
+    nbDiv = nbDiv.id
+    $("."+nbDiv+"").append("<input type='text' id='serie' placeholder='N° serie' required>")
+    $("."+nbDiv+"").append("<div class='row'></div>")
+    $("."+nbDiv+"").append("<input type='text' id='battery' placeholder='N° batterie' required>")
+    
+}
 
 function quantiteTrottinette(sel){
     var product = sel.options[sel.selectedIndex].text
@@ -131,7 +139,9 @@ function quantiteAccessoire(sel){
     })
 };
 
-function printDevis(){
+async function printDevis(){
+    var numeroFacture = await client.query("SELECT numero_facture FROM public.facture ORDER BY numero_facture DESC LIMIT 1;")
+    var numFacture = numeroFacture.rows[0].numero_facture + 1
     var fname = document.getElementById("fname").value;
     var lname = document.getElementById("lname").value;
     var adress = document.getElementById("adress").value;
@@ -141,68 +151,60 @@ function printDevis(){
     var phone = document.getElementById("phone").value;
     var divNbProduct = document.getElementById('nombProduct');
     var nbProduct = divNbProduct.options[divNbProduct.selectedIndex].text;
-    var listProduct = [];
+    var url = "devisToPrint.html?fname="+fname+"&lname="+lname+"&adress="+adress+"&city="+city+"&zip="+zip+"&numFacture="+numFacture+"&nbProduct="+nbProduct
     for(var i=0; i < nbProduct;i++){
         var typeOfProduct = document.getElementById('typeOfProduct'+i+'');
         var productType = typeOfProduct.options[typeOfProduct.selectedIndex].text;
         if (productType === 'Velo'){
             let divVelo = document.getElementById('containerVelo'+i+'');
-            var velo = divVelo.options[divVelo.selectedIndex].text;
-            client.query("SELECT prix FROM core_velo WHERE model=\'"+velo+"\'",(err,res)=>{
-                if (err) { console.error(err); return; }
-                else{
-                    for(var i =0;i < res.rows.length;i++){
-                        let item = res.rows[i];
-                        var prix = item['prix'];
-                    let veloSplit = velo.split(' ').join('');
-                    let divQuantiteVelo = document.getElementById(''+veloSplit+'');
-                    var quantiteVelo = divQuantiteVelo.options[divQuantiteVelo.selectedIndex].text;
-                    listProduct.push(velo, prix, quantiteVelo);
-                    }
-                }
-            })
+            let velo = divVelo.options[divVelo.selectedIndex].text;
+            let res = await client.query("SELECT prix FROM core_velo WHERE model=\'"+velo+"\'")
+                for(var a =0;a < res.rows.length;a++){
+                    let item = res.rows[a];
+                    var prix = item['prix'];
+                let veloSplit = velo.split(' ').join('');
+                let divQuantiteVelo = document.getElementById(''+veloSplit+'');
+                var quantiteVelo = divQuantiteVelo.options[divQuantiteVelo.selectedIndex].text;
+                var serieNumber = document.getElementById("serie").value;
+                var batteryNumber = document.getElementById("battery").value;
+                var product = [productType, velo, prix, quantiteVelo, serieNumber, batteryNumber]
+                url += "&listProduct"+[i]+"="+product
+            }
         }
         if (productType === 'Trottinette'){
             let divTrottinette = document.getElementById('containerTrottinette'+i+'');
             let trottinette = divTrottinette.options[divTrottinette.selectedIndex].text;
-            client.query("SELECT prix FROM trottinette WHERE model=\'"+trottinette+"\'",(err,res)=>{
-                if (err) { console.error(err); return; }
-                else{
-                    for(var i =0;i < res.rows.length;i++){
-                        let item = res.rows[i];
-                        var prix = item['prix'];
-                        let trottinetteSplit = trottinette.split(' ').join('');
-                        let divQuantiteTrottinette = document.getElementById(''+trottinetteSplit+'');
-                        var quantiteTrottinette = divQuantiteTrottinette.options[divQuantiteTrottinette.selectedIndex].text;
-                        listProduct.push(trottinette, prix, quantiteTrottinette);
-                    }
-                }
-            })
+            let res = await client.query("SELECT prix FROM trottinette WHERE model=\'"+trottinette+"\'")
+                for(var a =0;a < res.rows.length;a++){
+                    let item = res.rows[a];
+                    var prix = item['prix'];
+                    let trottinetteSplit = trottinette.split(' ').join('');
+                    let divQuantiteTrottinette = document.getElementById(''+trottinetteSplit+'');
+                    var quantiteTrottinette = divQuantiteTrottinette.options[divQuantiteTrottinette.selectedIndex].text;
+                    var product = [trottinette, prix, quantiteTrottinette]
+                    url += "&listProduct"+[i]+"="+product
+            }
         }
         if (productType === 'Accessoires'){
             let divAccessoire = document.getElementById('containerAccessoire'+i+'');
-            let accessoire = divAccessoire.options[divAccessoire.selectedIndex].text;
-            client.query("SELECT prix FROM accessoire WHERE model=\'"+accessoire+"\'",(err,res)=>{
-                if (err) { console.error(err); return; }
-                else{
-                    for(var i =0;i < res.rows.length;i++){
-                        let item = res.rows[i];
-                        var prix = item['prix'];
-                        let accessoireSplit = accessoire.split(' ').join('');
-                        let divQuantiteAccessoire = document.getElementById(''+accessoireSplit+'');
-                        var quantiteAccessoire = divQuantiteAccessoire.options[divQuantiteAccessoire.selectedIndex].text;
-                        listProduct.push(accessoire, prix, quantiteAccessoire);
-                    }
-                }
-            })
+            var accessoire = divAccessoire.options[divAccessoire.selectedIndex].text;
+            let res = await client.query("SELECT prix FROM accessoire WHERE model=\'"+accessoire+"\'")
+                for(var a=0;a < res.rows.length;a++){
+                    console.log(accessoire)
+                    let item = res.rows[a];
+                    var prix = item['prix'];
+                    let accessoireSplit = accessoire.split(' ').join('');
+                    let divQuantiteAccessoire = document.getElementById(''+accessoireSplit+'');
+                    var quantiteAccessoire = divQuantiteAccessoire.options[divQuantiteAccessoire.selectedIndex].text;
+                    var product = [accessoire, prix, quantiteAccessoire]
+                    url += "&listProduct"+[i]+"="+product
+            }
         }
     }
     if (fname === 0 || lname.length === 0 || adress.length === 0 || city.length === 0 || zip.length === 0){
         //pass
     }
     else{
-        url = "devisToPrint.html?fname="+fname+"&lname="+lname+"&adress="+adress+"&city="+city+"&zip="+zip+"&nbProduct="+nbProduct+"&productList="+listProduct
-        myWindow = window.open(url, "width=1000,height=1000");
+        myWindow = window.open(url, ""+numFacture+"", "width=1300,height=1300");
     }
 };
-

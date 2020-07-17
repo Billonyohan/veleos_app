@@ -140,6 +140,8 @@ function quantiteAccessoire(sel){
 };
 
 async function printFacture(){
+    var numeroFacture = await client.query("SELECT numero_facture FROM public.facture ORDER BY numero_facture DESC LIMIT 1;")
+    var numFacture = numeroFacture.rows[0].numero_facture + 1
     var fname = document.getElementById("fname").value;
     var lname = document.getElementById("lname").value;
     var adress = document.getElementById("adress").value;
@@ -149,7 +151,7 @@ async function printFacture(){
     var phone = document.getElementById("phone").value;
     var divNbProduct = document.getElementById('nombProduct');
     var nbProduct = divNbProduct.options[divNbProduct.selectedIndex].text;
-    var url = "factureToPrint.html?fname="+fname+"&lname="+lname+"&adress="+adress+"&city="+city+"&zip="+zip+"&nbProduct="+nbProduct
+    var url = "factureToPrint.html?fname="+fname+"&lname="+lname+"&adress="+adress+"&city="+city+"&zip="+zip+"&numFacture="+numFacture+"&nbProduct="+nbProduct
     for(var i=0; i < nbProduct;i++){
         var typeOfProduct = document.getElementById('typeOfProduct'+i+'');
         var productType = typeOfProduct.options[typeOfProduct.selectedIndex].text;
@@ -203,8 +205,6 @@ async function printFacture(){
         //pass
     }
     else{
-        console.log(url)
-        myWindow = window.open(url,"Facture", "width=1300,height=1300");
+        myWindow = window.open(url, ""+numFacture+"", "width=1300,height=1300");
     }
 };
-

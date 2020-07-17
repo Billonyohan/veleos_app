@@ -3,13 +3,13 @@
   <head>
     <meta charset="UTF-8">
   </head>
-  <style type="text/css">td{padding-left: 15px;padding-right: 15px;padding-top: 5px;padding-bottom: 5px;}table, td {border: 1px solid black;text-align: center;}body{background: #ccc;padding: 30px;}.container{width: 21cm;min-height: 29.7cm;}.invoice{background: white;width: 100%;padding: 50px;}.row{display: grid;grid-template-columns: 1fr 1fr;}#logo{float: left;margin-left: 60px;width: 4cm;}.document-type{float: right;margin-right: 30px;text-align: right;color: #444;}p{margin-left: 40px;}table{margin-left:auto;margin-right:auto;vertical-align:middle;border: 1px solid black; text-align: center;}footer{position: absolute;bottom: 0;width: 850px;}.bottom-page{font-size: 0.7em;border: 1px solid black;text-align: center;}.divCity{margin-right: 10px;}table{margin-left:auto;margin-right:auto;vertical-align:middle;border: 1px solid black; text-align: center;margin-top: 10px;}</style>
+  <style type="text/css">td{padding-left: 15px;padding-right: 15px;padding-top: 5px;padding-bottom: 5px;}table, td {text-align: center;}body{background: #ccc;padding: 30px;}.container{width: 21cm;min-height: 29.7cm;}.invoice{background: white;width: 100%;padding: 50px;}.row{display: grid;grid-template-columns: 1fr 1fr;}#logo{float: left;margin-left: 60px;width: 4cm;}.document-type{float: right;margin-right: 30px;text-align: right;color: #444;}p{margin-left: 40px;}table{margin-left:auto;margin-right:auto;vertical-align:middle; text-align: center;}footer{position: absolute;bottom: 0;width: 850px;}.bottom-page{font-size: 0.7em;border: 1px solid black;text-align: center;}.divCity{margin-right: 10px;}table{margin-left:auto;margin-right:auto;vertical-align:middle;text-align: center;margin-top: 10px;}</style>
   <body>
-    <div class="container" onclick="print()">
-      <div class="invoice">
+    <div class="container" onclick="saveFacture()">
+      <div class="invoice" onclick="print()">
         <div class="row">
           <img src="../img/logo.png" alt="logo" id="logo" class="logo">
-          <div class="document-type display-4"><h1 style="margin-right: 10px;">FACTURE</h1><div class="row" style="display:inline-block"><strong style="float: right;margin-right: 45px;display:inline-flex;">N°90T-<div id="day"></div>-<div id="month"></div>-<div id="year"></div></strong></div></h1></div>
+          <div class="document-type display-4"><h1 style="margin-right: 10px;">FACTURE</h1><div class="row" style="display:inline-block"><strong style="float: right;margin-right: 45px;display:inline-flex;">N°<div id="numFacture"></div>-<div id="day"></div>-<div id="month"></div>-<div id="year"></div></strong></div></h1></div>
           <div></div>
         </div>
         <br>
@@ -20,9 +20,9 @@
               <strong>Veleos</strong><br>
               5 avenue des ursulines<br>
               78300 POISSY<br>
-              01.30.30.30.30<br>
-              veleos@gmail.com<br>
-              veleos.fr
+              01.30.74.64.38<br>
+              veleos@orange.fr<br>
+              www.veleos.fr
             </p>
           </div>
           <div class="col-5">
@@ -38,7 +38,7 @@
         <div class="containerTable">
           <table class="table table-striped" style="width:100%;">
             <thead>
-              <tr>
+              <tr style="background-color: #F5BC48;">
                 <th>Description</th>
                 <th>Quantité</th>
                 <th>PU HT</th>
@@ -51,13 +51,14 @@
           <div class="my-auto">
             <table class="table2 table-sm text-right" style="width: 50%;">
               <tr id="totalHorsTaxe">
-                <td><strong>Total HT</strong></td>
+                <div></div>
+                <td style="background-color:#F5BC48;">Total HT</td>
               </tr>
               <tr id="totalTVA">
-                <td>TVA 20%</td>
+                <td style="background-color: #F5BC48;">TVA 20%</td>
               </tr>
               <tr id="totalTTC">
-                <td><strong>Total TTC</strong></td>
+                <td style="background-color:#F5BC48;"><strong>Total TTC</strong></td>
               </tr>
             </table>
           </div>
@@ -70,7 +71,7 @@
         <footer>
           <p class="bottom-page text-right">
             SARL VELEOS  - N° SIRET 88394372200016 RCS Versailles B 883 943 722<br>
-            5 avenue des ursulines - 78300 POISSY 01.29.29.29.29 - www.veleos.fr<br>
+            5 avenue des ursulines - 78300 POISSY 01.30.74.64.38 - www.veleos.fr<br>
             Code APE 4540Z - N° TVA Intracom. FR 77 808977532<br>
           </p>
         </footer>
@@ -84,19 +85,21 @@
       var $ = window.jQuery;
       const queryString = window.location.search;
       const urlParams = new URLSearchParams(queryString);
-      const lname = urlParams.get('lname');
-      document.getElementById("last_name").innerHTML = lname
+      var lname = urlParams.get('lname');
+      document.getElementById("last_name").innerHTML = lname;
       const fname = urlParams.get('fname');
-      document.getElementById("first_name").innerHTML = fname
+      document.getElementById("first_name").innerHTML = fname;
       const adress = urlParams.get('adress');
-      document.getElementById("adress").innerHTML = adress
+      document.getElementById("adress").innerHTML = adress;
       const city = urlParams.get('city');
-      document.getElementById("city").innerHTML = city
+      document.getElementById("city").innerHTML = city;
       const zip = urlParams.get('zip');
-      document.getElementById("zip").innerHTML = zip
+      document.getElementById("zip").innerHTML = zip;
+      const numFacture = urlParams.get('numFacture');
+      document.getElementById("numFacture").innerHTML = numFacture;
       var date = new Date();
       document.getElementById("year").innerHTML = date.getFullYear();
-      document.getElementById("month").innerHTML = date.getMonth();
+      document.getElementById("month").innerHTML = date.getMonth() + 1;
       document.getElementById("day").innerHTML = date.getDate();
       var nbProduct = urlParams.get('nbProduct');
       var totalHorsTaxes = 0;
@@ -147,7 +150,15 @@
       $("#totalHorsTaxe").append("<td class=text-right>"+totalHorsTaxes+" €</td>")
       $("#totalTVA").append("<td class=text-right>"+totalTva+" €</td>")
       let totalTtc = Number(totalHorsTaxes) + Number(totalTva)
-      $("#totalTTC").append("<td class=text-right>"+totalTtc+" €</td>")
+      totalTtc.toFixed(2)
+      $("#totalTTC").append("<td class=text-right><strong>"+totalTtc+" €</strong></td>")
+    }
+    function saveFacture(){
+      const queryString = window.location.search;
+      const urlParams = new URLSearchParams(queryString);
+      var lname = urlParams.get('lname');
+      console.log(lname)
+      client.query("INSERT INTO public.facture (nom) values ('"+lname+"')")
     }
   </script>
 </html>
