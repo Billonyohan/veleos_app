@@ -1,1 +1,6 @@
 node_modules
+veleos_app-darwin-x64
+veleos_app-mas-x64
+veleos_app-win32-arm64
+veleos_app-win32-ia32
+veleos_app-win32-x64

@@ -12,7 +12,7 @@ $(document).ready(function() {
   
   client.connect()
   function dataAccessoire(){
-    client.query('SELECT * FROM accessoire ORDER BY model DESC',(err,res)=>{
+    client.query('SELECT * FROM accessoire ORDER BY model ASC',(err,res)=>{
       for(var i =0;i < res.rows.length;i++){
         var item = res.rows[i];
         var model = item['model']

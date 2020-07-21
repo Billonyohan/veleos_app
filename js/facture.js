@@ -23,7 +23,7 @@ function typeProduct(sel) {
     $(".containerVelo"+nbDiv+"").remove();
     if (typeOfProduct == 'Velo'){
         $("#"+nbDiv+"").append("<div class='containerVelo"+nbDiv+"'><select id='containerVelo"+nbDiv+"' onChange='quantiteVelo(this)'><option></option></select></div>")
-        client.query('SELECT model FROM core_velo ORDER BY model DESC',(err,res)=>{
+        client.query('SELECT model FROM velo ORDER BY model ASC',(err,res)=>{
             if (err) { console.error(err); return; }
             else{
                 for(var i =0;i < res.rows.length;i++){
@@ -37,7 +37,7 @@ function typeProduct(sel) {
     $(".containerTrottinette"+nbDiv+"").remove();
     if (typeOfProduct == 'Trottinette'){
         $("#"+nbDiv+"").append("<div class='containerTrottinette"+nbDiv+"'><select id='containerTrottinette"+nbDiv+"' onChange='quantiteTrottinette(this)'><option></option></select></div>")
-        client.query('SELECT model FROM trottinette ORDER BY model DESC',(err,res)=>{
+        client.query('SELECT model FROM trottinette ORDER BY model ASC',(err,res)=>{
             if (err) { console.error(err); return; }
             else{
                 for(var i =0;i < res.rows.length;i++){
@@ -53,7 +53,7 @@ function typeProduct(sel) {
     $(".containerAccessoire"+nbDiv+"").remove();
     if (typeOfProduct == 'Accessoires'){
         $("#"+nbDiv+"").append("<div class='containerAccessoire"+nbDiv+"'><select id='containerAccessoire"+nbDiv+"' onChange='quantiteAccessoire(this)'><option></option></select></div>")
-        client.query('SELECT model FROM accessoire ORDER BY model DESC',(err,res)=>{
+        client.query('SELECT model FROM accessoire ORDER BY model ASC',(err,res)=>{
             if (err) { console.error(err); return; }
             else{
                 for(var i =0;i < res.rows.length;i++){
@@ -74,17 +74,11 @@ function quantiteVelo(sel){
     var nbDiv = sel.id
     $("#quantiteVelo"+nbDiv+"").remove();
     $("."+nbDiv+"").append("<div id='quantiteVelo"+nbDiv+"'><select id="+productSplit+" onChange='matchingNumber("+nbDiv+")'><option></option></select></div>");
-    client.query("SELECT id FROM core_velo WHERE model=\'"+product+"\'",(err,res)=>{
+    client.query("SELECT * FROM velo WHERE model=\'"+product+"\'",(err,res)=>{
         if (err) { console.error(err); return; }
         else{
-            let productID = res.rows[0]['id'];
-        client.query("SELECT quantite FROM core_velo_stock WHERE velo_id=\'"+productID+"\'",(err,res)=>{
-            if (err) { console.error(err); return; }
-            else{
-                let quantite = res.rows[0]['quantite'];
-                $("#"+productSplit+"").append("<option>"+quantite+"</option>");         
-                }
-            })
+            let quantite = res.rows[0]['quantite'];
+            $("#"+productSplit+"").append("<option>"+quantite+"</option>");         
         }
     })
 };
@@ -158,7 +152,7 @@ async function printFacture(){
         if (productType === 'Velo'){
             let divVelo = document.getElementById('containerVelo'+i+'');
             let velo = divVelo.options[divVelo.selectedIndex].text;
-            let res = await client.query("SELECT prix FROM core_velo WHERE model=\'"+velo+"\'")
+            let res = await client.query("SELECT prix FROM velo WHERE model=\'"+velo+"\'")
                 for(var a =0;a < res.rows.length;a++){
                     let item = res.rows[a];
                     var prix = item['prix'];
