@@ -1,3 +1,4 @@
+//append data to html doc
 $(document).ready(function() {
     dataAccessoire();
   });

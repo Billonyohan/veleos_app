@@ -1,3 +1,4 @@
+//get the number of products
 function nbProduct(sel) {
     let nbProduct = sel.options[sel.selectedIndex].text
     $('.rowProduct').remove();
@@ -7,7 +8,7 @@ function nbProduct(sel) {
         $("#rowProduct"+i+"").append("<div class='containerProduct' id='"+i+"'><select id='typeOfProduct"+i+"' onChange='typeProduct(this);'><option></option><option value='"+i+"'>Velo</option><option value='"+i+"'>Trottinette</option><option value='"+i+"'>Accessoires</option></select></div>")
     }
 }
-
+//data connexion psql
 const {Pool, Client} = require('pg')
 client = new Client({
     host: 'localhost',
@@ -17,6 +18,7 @@ client = new Client({
 });
 
 client.connect()
+//get the type of products
 function typeProduct(sel) {
     var typeOfProduct = sel.options[sel.selectedIndex].text
     var nbDiv = sel.options[sel.selectedIndex].value
@@ -67,7 +69,7 @@ function typeProduct(sel) {
         })
     }
 };
-
+// get the quantity of products
 function quantiteVelo(sel){
     var product = sel.options[sel.selectedIndex].text
     var productSplit = product.split(' ').join('');
@@ -82,7 +84,7 @@ function quantiteVelo(sel){
         }
     })
 };
-
+// append input for n° serie and battery of products
 function matchingNumber(nbDiv){
     nbDiv = nbDiv.id
     $("."+nbDiv+"").append("<input type='text' id='serie' placeholder='N° serie' required>")
@@ -90,7 +92,7 @@ function matchingNumber(nbDiv){
     $("."+nbDiv+"").append("<input type='text' id='battery' placeholder='N° batterie' required>")
     
 }
-
+// get the quantity of products
 function quantiteTrottinette(sel){
     var product = sel.options[sel.selectedIndex].text
     var productSplit = product.split(' ').join('');
@@ -111,7 +113,7 @@ function quantiteTrottinette(sel){
         }
     })
 };
-
+// get the quantity of products
 function quantiteAccessoire(sel){
     var product = sel.options[sel.selectedIndex].text
     var productSplit = product.split(' ').join('');
@@ -132,7 +134,7 @@ function quantiteAccessoire(sel){
         }
     })
 };
-
+// print the html docs
 async function printDevis(){
     var numeroFacture = await client.query("SELECT numero_facture FROM public.facture ORDER BY numero_facture DESC LIMIT 1;")
     var numFacture = numeroFacture.rows[0].numero_facture + 1

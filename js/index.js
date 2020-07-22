@@ -1,3 +1,4 @@
+//create the first window
 const { app, BrowserWindow } = require('electron')
 
 function createWindow () {
