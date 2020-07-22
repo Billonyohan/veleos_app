@@ -143,8 +143,6 @@ async function printDevis(){
     var adress = document.getElementById("adress").value;
     var city = document.getElementById("city").value;
     var zip = document.getElementById("zip").value;
-    var email = document.getElementById("email").value;
-    var phone = document.getElementById("phone").value;
     var divNbProduct = document.getElementById('nombProduct');
     var nbProduct = divNbProduct.options[divNbProduct.selectedIndex].text;
     var url = "devisToPrint.html?fname="+fname+"&lname="+lname+"&adress="+adress+"&city="+city+"&zip="+zip+"&numFacture="+numFacture+"&nbProduct="+nbProduct
